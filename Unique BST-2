@@ -1,0 +1,45 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public IList<TreeNode> GenerateTrees(int n) {
+        
+        List<TreeNode> result = new List<TreeNode>();
+        if(n == 0)
+            return result;
+        
+        helper(1,n, ref result);
+        return result;
+    }
+    
+    public static List<TreeNode> helper(int start,int n, ref List<TreeNode> result)
+    {
+        if(start > n)
+        {
+            result.Add(null);
+            return result;
+        }
+        
+        for(int i = start ;i <=n;i++)
+        {
+            List<TreeNode> lefts = helper(start,i-1, ref result);
+            List<TreeNode> rights = helper(i+1,n, ref result);
+            foreach(TreeNode left in lefts)
+             foreach(TreeNode right in rights)
+             {
+                 TreeNode root = new TreeNode(i);
+                 root.left = left;
+                 root.right = right;
+                 result.Add(root);
+             }
+        }
+        
+        return result;
+    }
+}
